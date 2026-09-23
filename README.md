@@ -4,10 +4,10 @@
 
 ## 시작하기
 
-블로그와 테마 저장소를 같은 상위 디렉터리에 둔 경우, 블로그의 `Gemfile`에 다음을 추가합니다.
+블로그의 `Gemfile`에 GitHub 저장소와 버전 태그를 지정합니다.
 
 ```ruby
-gem "jekyll-theme-yeobaek", path: "../jekyll-theme-yeobaek"
+gem "jekyll-theme-yeobaek", git: "https://github.com/mrpark219/jekyll-theme-yeobaek.git", tag: "v0.1.0"
 gem "jekyll-seo-tag"
 gem "jekyll-sitemap"
 ```
@@ -30,7 +30,7 @@ defaults:
       permalink: /posts/:title/
 ```
 
-테마를 별도 Git 저장소로 공개한 뒤에는 `Gemfile`의 로컬 `path:` 대신 공개 저장소와 버전 태그를 지정할 수 있습니다. 최소 구성은 [`example/`](example/)에서 볼 수 있습니다.
+테마를 직접 수정하며 확인할 때는 같은 상위 디렉터리에 두 저장소를 놓고 `git:` 설정 대신 `path: "../jekyll-theme-yeobaek"`를 사용할 수 있습니다. 최소 구성은 [`example/`](example/)에서 볼 수 있습니다.
 
 ## 블로그에서 관리할 파일
 
@@ -99,4 +99,4 @@ bundle install
 bundle exec jekyll serve
 ```
 
-실제 블로그를 실행할 때는 블로그 저장소에서 같은 명령을 사용합니다. `path:` 방식에서는 테마 저장소가 블로그와 같은 상위 디렉터리에 있어야 합니다.
+실제 블로그를 실행할 때는 블로그 저장소에서 같은 명령을 사용합니다. GitHub 의존성을 사용하면 `bundle install`이 지정된 태그의 테마를 받아옵니다. `example/`은 테마 개발용이므로 로컬 `path:`를 사용합니다.
