@@ -1,0 +1,8 @@
+/.bundle/
+/_site/
+/.jekyll-cache/
+/*.gem
+/.DS_Store
+/example/_site/
+/example/.jekyll-cache/
+/example/Gemfile.lock
