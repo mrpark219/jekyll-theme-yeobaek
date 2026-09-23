@@ -1,0 +1,12 @@
+{% assign post_thumbnail = include.post.image.path | default: include.post.image.url | default: include.post.image %}
+<article class="post-row"{% if include.searchable %} data-post-row{% endif %}>
+  <a class="post-row-main{% if post_thumbnail %} has-thumbnail{% endif %}" href="{{ include.post.url | relative_url | escape }}">
+    {% include thumbnail.html image=post_thumbnail %}
+    <div class="post-row-copy">
+      {% if include.heading == 'h3' %}<h3>{{ include.post.title | escape }}</h3>{% else %}<h2>{{ include.post.title | escape }}</h2>{% endif %}
+      <p>{{ include.post.description | default: include.post.excerpt | strip_html | truncate: include.description_length | escape }}</p>
+      {% if include.show_tags %}<span class="post-tags">{{ include.post.categories | join: ' · ' }}{% for tag in include.post.tags %}{% unless include.post.categories contains tag %} · {{ tag }}{% endunless %}{% endfor %}</span>{% endif %}
+    </div>
+  </a>
+  <time datetime="{{ include.post.date | date_to_xmlschema }}">{{ include.post.date | date: '%Y.%m.%d' }}</time>
+</article>
