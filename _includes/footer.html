@@ -1,0 +1,8 @@
+<footer class="site-footer site-container">
+  <span>© {{ 'now' | date: '%Y' }} {{ site.yeobaek.owner | default: site.title }}</span>
+  {% if site.yeobaek.social %}
+  <nav class="footer-links" aria-label="Contact">
+    {% for item in site.yeobaek.social %}<a href="{{ item.url }}"{% unless item.url contains 'mailto:' %} target="_blank" rel="noopener noreferrer"{% endunless %}>{{ item.label }}</a>{% endfor %}
+  </nav>
+  {% endif %}
+</footer>

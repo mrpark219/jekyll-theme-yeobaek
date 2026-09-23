@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="{{ site.lang | default: 'ko-KR' }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% seo %}
+    <link rel="icon" type="image/svg+xml" href="{{ site.yeobaek.favicon | default: '/assets/favicon.svg' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/yeobaek.css' | relative_url }}">
+    {% if site.yeobaek.custom_css %}<link rel="stylesheet" href="{{ site.yeobaek.custom_css | relative_url }}">{% endif %}
+  </head>
+  <body>
+    {% include header.html %}
+    <main id="main-content" class="site-container">{{ content }}</main>
+    {% include footer.html %}
+    <script defer src="{{ '/assets/js/yeobaek.js' | relative_url }}"></script>
+  </body>
+</html>

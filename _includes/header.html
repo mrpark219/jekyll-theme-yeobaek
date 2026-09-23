@@ -1,0 +1,9 @@
+<a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+<header class="site-header site-container">
+  <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="{{ site.title }} 홈">{{ site.yeobaek.brand | default: site.title }}</a>
+  <nav class="site-nav" aria-label="Primary">
+    <a href="{{ '/' | relative_url }}"{% if page.nav == 'home' %} aria-current="page"{% endif %}>Home</a>
+    <a href="{{ '/posts/' | relative_url }}"{% if page.nav == 'posts' or page.layout == 'post' %} aria-current="page"{% endif %}>Posts</a>
+    <a href="{{ '/about/' | relative_url }}"{% if page.nav == 'about' %} aria-current="page"{% endif %}>About</a>
+  </nav>
+</header>

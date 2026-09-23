@@ -1,0 +1,4 @@
+---
+layout: default
+---
+<article class="about-page"><div class="about-heading"><div><h1>{{ site.yeobaek.owner | default: page.title }}</h1>{% if site.yeobaek.role %}<span>{{ site.yeobaek.role }}</span>{% endif %}{% if site.yeobaek.about_intro %}<p>{{ site.yeobaek.about_intro }}</p>{% endif %}</div>{% if site.yeobaek.social %}<nav class="about-links" aria-label="Contact">{% for item in site.yeobaek.social %}<a href="{{ item.url }}"{% unless item.url contains 'mailto:' %} target="_blank" rel="noopener noreferrer"{% endunless %}>{{ item.label }} ↗</a>{% endfor %}</nav>{% endif %}</div><div class="about-content article-body">{{ content }}</div></article>

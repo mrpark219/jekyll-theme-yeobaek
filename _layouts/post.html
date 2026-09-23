@@ -1,0 +1,17 @@
+---
+layout: default
+---
+<div class="article-grid">
+  <article class="article">
+    <a class="back-link" href="{{ '/posts/' | relative_url }}">← Posts</a>
+    {% if page.categories.size > 0 %}<p class="article-category">{{ page.categories | join: ' / ' }}</p>{% endif %}
+    <h1>{{ page.title }}</h1>
+    <div class="article-meta"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%Y.%m.%d' }}</time>{% if page.last_modified_at %}<span>· Updated {{ page.last_modified_at | date: '%Y.%m.%d' }}</span>{% endif %}</div>
+    <div class="article-body" id="article-body">{{ content }}</div>
+    {% if site.yeobaek.comments.repo and page.comments != false %}
+    <section class="comments" aria-labelledby="comments-title"><h2 id="comments-title">Comments</h2><script src="https://utteranc.es/client.js" repo="{{ site.yeobaek.comments.repo }}" issue-term="{{ site.yeobaek.comments.issue_term | default: 'pathname' }}" label="{{ site.yeobaek.comments.label | default: 'comment' }}" theme="github-light" crossorigin="anonymous" async></script></section>
+    {% endif %}
+  </article>
+  <aside class="toc" id="toc" aria-label="On this page" hidden><strong>On this page</strong><nav id="toc-links"></nav></aside>
+</div>
+{% if page.mermaid %}<script defer src="{{ '/assets/vendor/mermaid/mermaid.min.js' | relative_url }}"></script>{% endif %}

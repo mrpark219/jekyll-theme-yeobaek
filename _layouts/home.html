@@ -1,0 +1,32 @@
+---
+layout: default
+---
+<section class="home-intro">
+  <h1>{{ site.yeobaek.intro_title | default: site.title }}</h1>
+  {% if site.yeobaek.intro %}<p>{{ site.yeobaek.intro }}</p>{% endif %}
+  <div class="intro-links"><a href="{{ '/about/' | relative_url }}">About ↗</a><a href="{{ '/posts/' | relative_url }}">Posts →</a></div>
+</section>
+
+{% if site.data.featured and site.data.featured.size > 0 %}
+<section class="home-section" aria-labelledby="selected-title">
+  <h2 id="selected-title">Selected</h2>
+  <div class="selected-list">
+    {% for item in site.data.featured %}
+    <article class="selected-row">
+      <span class="row-kind">{% if item.type == 'link' %}Link{% else %}Post{% endif %}</span>
+      <div><h3><a href="{% if item.type == 'link' %}{{ item.url }}{% else %}{{ item.url | relative_url }}{% endif %}"{% if item.type == 'link' %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ item.title }}</a></h3>{% if item.description %}<p>{{ item.description }}</p>{% endif %}</div>
+      <a class="row-arrow" href="{% if item.type == 'link' %}{{ item.url }}{% else %}{{ item.url | relative_url }}{% endif %}"{% if item.type == 'link' %} target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{{ item.title }} 열기">↗</a>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="home-section" aria-labelledby="recent-title">
+  <div class="section-heading"><h2 id="recent-title">Recent posts</h2><a href="{{ '/posts/' | relative_url }}">View all →</a></div>
+  <div class="post-list">
+    {% for post in site.posts limit:3 %}
+    <article class="post-row"><div><h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3><p>{{ post.description | default: post.excerpt | strip_html | truncate: 110 }}</p></div><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%Y.%m.%d' }}</time></article>
+    {% endfor %}
+  </div>
+</section>
