@@ -7,7 +7,7 @@
 블로그의 `Gemfile`에 GitHub 저장소와 버전 태그를 지정합니다.
 
 ```ruby
-gem "jekyll-theme-yeobaek", git: "https://github.com/mrpark219/jekyll-theme-yeobaek.git", tag: "v0.1.0"
+gem "jekyll-theme-yeobaek", git: "https://github.com/mrpark219/jekyll-theme-yeobaek.git", tag: "v0.2.0"
 gem "jekyll-seo-tag"
 gem "jekyll-sitemap"
 ```
@@ -80,7 +80,10 @@ yeobaek:
   title: 프로젝트 저장소
   description: 만든 것을 소개합니다.
   url: https://github.com/example/project
+  image: /assets/project-cover.png
 ```
+
+글의 front matter에 `image`가 있으면 홈의 최신 글과 Posts 목록에 썸네일이 표시됩니다. 대표 글은 연결된 글의 이미지를 사용하며, 외부 링크에는 위 예시처럼 `image`를 직접 지정할 수 있습니다. 이미지가 없는 항목은 텍스트만 표시합니다.
 
 ## 포함된 기능과 스타일
 
