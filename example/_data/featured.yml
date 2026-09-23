@@ -1,0 +1,8 @@
+- type: post
+  title: A sample post
+  description: An example of a manually selected article.
+  url: /posts/first-note/
+- type: link
+  title: An external project
+  description: A link that can be pinned beside posts.
+  url: https://github.com/example

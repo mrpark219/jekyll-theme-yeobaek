@@ -1,0 +1,27 @@
+theme: jekyll-theme-yeobaek
+title: Example Notes
+description: A sample site for Yeobaek.
+url: https://example.com
+baseurl: ""
+lang: en
+timezone: UTC
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      permalink: /posts/:title/
+yeobaek:
+  intro_title: Hello, I'm Alex.
+  intro: Notes on software and the things I learn along the way.
+  social:
+    - label: GitHub
+      url: https://github.com/example
+    - label: Email
+      url: mailto:alex@example.com
+    - label: LinkedIn
+      url: https://www.linkedin.com/in/example/
