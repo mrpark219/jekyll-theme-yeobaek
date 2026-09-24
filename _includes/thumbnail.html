@@ -1,6 +1,6 @@
 {% assign thumbnail_source = include.image.path | default: include.image.url | default: include.image %}
 {% if thumbnail_source %}
-<span class="post-thumbnail">
+<span class="post-thumbnail{% if include.mode == 'favicon' %} is-favicon{% endif %}">
   <img src="{% if thumbnail_source contains '://' %}{{ thumbnail_source | escape }}{% else %}{{ thumbnail_source | relative_url | escape }}{% endif %}" alt="" width="132" height="92" loading="lazy" decoding="async">
 </span>
 {% endif %}

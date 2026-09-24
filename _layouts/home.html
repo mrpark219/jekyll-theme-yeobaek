@@ -14,10 +14,17 @@ layout: default
     {% for item in site.data.featured %}
     {% assign selected_post = site.posts | where: 'url', item.url | first %}
     {% assign selected_image = item.image | default: selected_post.image %}
+    {% assign selected_favicon = item.favicon %}
+    {% if item.type == 'link' and selected_image == nil and selected_favicon == nil and item.url contains '://' %}
+      {% assign link_parts = item.url | split: '/' %}
+      {% assign link_domain = link_parts[2] %}
+      {% assign selected_favicon = 'https://www.google.com/s2/favicons?domain_url=https://' | append: link_domain | append: '&sz=64' %}
+    {% endif %}
+    {% assign selected_thumbnail = selected_image | default: selected_favicon %}
     <article class="selected-row">
       <span class="row-kind">{% if item.type == 'link' %}Link{% else %}Post{% endif %}</span>
-      <a class="selected-main{% if selected_image %} has-thumbnail{% endif %}" href="{% if item.type == 'link' %}{{ item.url | escape }}{% else %}{{ item.url | relative_url | escape }}{% endif %}"{% if item.type == 'link' %} target="_blank" rel="noopener noreferrer"{% endif %}>
-        {% include thumbnail.html image=selected_image %}
+      <a class="selected-main{% if selected_thumbnail %} has-thumbnail{% endif %}" href="{% if item.type == 'link' %}{{ item.url | escape }}{% else %}{{ item.url | relative_url | escape }}{% endif %}"{% if item.type == 'link' %} target="_blank" rel="noopener noreferrer"{% endif %}>
+        {% if selected_image %}{% include thumbnail.html image=selected_image %}{% else %}{% include thumbnail.html image=selected_favicon mode='favicon' %}{% endif %}
         <div class="selected-copy"><h3>{{ item.title | escape }}</h3>{% if item.description %}<p>{{ item.description | escape }}</p>{% endif %}</div>
       </a>
       <span class="row-arrow" aria-hidden="true">↗</span>
