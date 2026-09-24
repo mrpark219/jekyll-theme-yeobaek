@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name = "jekyll-theme-yeobaek"
-  spec.version = "0.2.2"
+  spec.version = "0.2.3"
   spec.authors = ["SungHwan Park"]
   spec.summary = "A quiet, content-first Jekyll theme for technical writing"
   spec.description = "A light Jekyll blog theme with a Dracula syntax palette, post search, and a table of contents."
