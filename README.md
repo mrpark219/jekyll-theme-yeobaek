@@ -7,7 +7,7 @@
 블로그의 `Gemfile`에 GitHub 저장소와 버전 태그를 지정합니다.
 
 ```ruby
-gem "jekyll-theme-yeobaek", git: "https://github.com/mrpark219/jekyll-theme-yeobaek.git", tag: "v0.2.1"
+gem "jekyll-theme-yeobaek", git: "https://github.com/mrpark219/jekyll-theme-yeobaek.git", tag: "v0.2.2"
 gem "jekyll-seo-tag"
 gem "jekyll-sitemap"
 ```
@@ -80,10 +80,10 @@ yeobaek:
   title: 프로젝트 저장소
   description: 만든 것을 소개합니다.
   url: https://github.com/example/project
-  image: /assets/project-cover.png
+  thumbnail: /assets/project-icon.png
 ```
 
-글의 front matter에 `image`가 있으면 홈의 최신 글과 Posts 목록에 썸네일이 표시됩니다. 대표 글은 연결된 글의 이미지를 사용합니다. 외부 링크에는 위 예시처럼 `image`를 지정할 수 있고, 이미지가 없으면 링크 도메인의 파비콘을 표시합니다. 기본 파비콘은 Google의 파비콘 서비스에서 가져오며, `favicon`에 이미지 주소를 지정하면 직접 선택한 파비콘을 사용합니다. 이미지가 없는 일반 글은 텍스트만 표시합니다.
+글의 front matter에 `image`가 있으면 홈의 최신 글과 Posts 목록에 썸네일이 표시됩니다. 대표 글은 연결된 글의 이미지를 사용합니다. 외부 링크는 `image`에 대표 이미지를 지정하거나 `thumbnail`에 작은 사이트 아이콘을 지정할 수 있습니다. 둘 다 없으면 Google의 파비콘 서비스에서 링크 도메인의 아이콘을 가져옵니다. 이미지가 없는 일반 글은 텍스트만 표시합니다.
 
 ## 포함된 기능과 스타일
 
