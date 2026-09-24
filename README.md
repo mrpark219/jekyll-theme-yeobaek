@@ -7,7 +7,7 @@
 블로그의 `Gemfile`에 GitHub 저장소와 버전 태그를 지정합니다.
 
 ```ruby
-gem "jekyll-theme-yeobaek", git: "https://github.com/mrpark219/jekyll-theme-yeobaek.git", tag: "v0.2.3"
+gem "jekyll-theme-yeobaek", git: "https://github.com/mrpark219/jekyll-theme-yeobaek.git", tag: "v0.2.4"
 gem "jekyll-seo-tag"
 gem "jekyll-sitemap"
 ```
