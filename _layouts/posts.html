@@ -4,7 +4,8 @@ layout: default
 <header class="page-heading"><h1>Posts</h1>{% if page.description %}<p>{{ page.description }}</p>{% endif %}</header>
 <div class="search-area"><label for="post-search">Search posts</label><input id="post-search" type="search" placeholder="제목, 주제, 태그 검색" autocomplete="off"><p id="search-status" role="status" aria-live="polite"></p></div>
 <div class="post-list" id="all-posts">
+  {% assign fallback_thumbnail = site.yeobaek.favicon | default: '/assets/favicon.svg' %}
   {% for post in site.posts %}
-  {% include post-list-item.html post=post heading='h2' description_length=140 searchable=true show_tags=true %}
+  {% include post-list-item.html post=post heading='h2' description_length=140 searchable=true show_tags=true fallback_thumbnail=fallback_thumbnail %}
   {% endfor %}
 </div>
