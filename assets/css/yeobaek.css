@@ -159,9 +159,10 @@ a:hover { text-decoration-thickness: 2px; }
 .toc a:hover, .toc a[aria-current="location"] { color: var(--yb-link); }
 .toc a[aria-current="location"] { font-weight: 600; }
 .article-next { margin-top: 52px; padding-top: 28px; border-top: 1px solid var(--yb-line); }
-.related-posts { margin-bottom: 24px; }
-.related-posts > h2 { margin: 0 0 8px; color: var(--yb-ink); font-size: 18px; }
-.related-posts .post-row:first-of-type { border-top: 0; }
+.post-navigation { margin-bottom: 24px; }
+.post-navigation section + section { margin-top: 24px; }
+.post-navigation h2 { margin: 0 0 8px; color: var(--yb-ink); font-size: 18px; }
+.post-navigation .post-row { border-top: 0; }
 .comments { margin-top: 50px; padding-top: 25px; border-top: 1px solid var(--yb-line); }
 .comments h2 { color: var(--yb-ink); font-size: 23px; }
 
