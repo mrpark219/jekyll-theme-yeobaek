@@ -7,7 +7,7 @@
 블로그의 `Gemfile`에 GitHub 저장소와 버전 태그를 지정합니다.
 
 ```ruby
-gem "jekyll-theme-yeobaek", git: "https://github.com/mrpark219/jekyll-theme-yeobaek.git", tag: "v0.2.4"
+gem "jekyll-theme-yeobaek", git: "https://github.com/mrpark219/jekyll-theme-yeobaek.git", tag: "v0.2.5"
 gem "jekyll-seo-tag"
 gem "jekyll-sitemap"
 ```
@@ -37,6 +37,7 @@ defaults:
 - `_posts/`: 글 원본입니다. 각 글의 제목, 날짜, 설명, 카테고리와 태그를 front matter에 작성합니다.
 - `about.md` 또는 `about.html`: 소개 및 이력서입니다. 기본 소개 레이아웃은 `layout: about`을 사용합니다. 별도 마크업으로 이력서를 꾸미려면 블로그에서 직접 작성할 수 있습니다.
 - `_data/featured.yml`: 홈에 고정할 대표 글과 외부 링크의 순서입니다.
+- `_data/external_posts.yml`: Medium 등 외부에 직접 작성한 글의 제목, 원래 발행일, 주제와 주소입니다. Posts와 홈의 최근 글에 로컬 글과 함께 표시됩니다.
 - `_config.yml`: 사이트 주소, 작성자 소개, 연락처, 댓글, 검색 엔진 메타데이터 등의 설정입니다.
 - `assets/css/custom.css`: 블로그 전용 스타일입니다. 테마 스타일 뒤에 불러옵니다.
 - `robots.txt`: 테마의 `assets/robots.txt`가 사이트 주소에 맞춰 루트 경로에 생성됩니다. 블로그에서 규칙을 바꾸려면 같은 `assets/robots.txt` 경로에 파일을 두고 `permalink: /robots.txt`를 지정합니다.
@@ -52,6 +53,7 @@ yeobaek:
   role: Backend Engineer
   intro_title: 안녕하세요, Alex입니다.
   intro: 직접 겪은 개발 문제와 해결 과정을 기록합니다.
+  featured_title: Featured
   social:
     - label: GitHub
       url: https://github.com/example
@@ -80,15 +82,44 @@ yeobaek:
   title: 프로젝트 저장소
   description: 만든 것을 소개합니다.
   url: https://github.com/example/project
-  thumbnail: /assets/project-icon.png
+  image: /assets/project-cover.png
 ```
 
-글의 front matter에 `image`가 있으면 홈의 최신 글과 Posts 목록에 썸네일이 표시됩니다. Posts 목록에서 `image`가 없는 글은 사이트 아이콘을 대신 표시합니다. 홈의 최신 글은 이미지가 없으면 텍스트만 표시합니다. 대표 글은 연결된 글의 이미지를 사용합니다. 외부 링크는 `image`에 대표 이미지를 지정하거나 `thumbnail`에 작은 사이트 아이콘을 지정할 수 있습니다. 둘 다 없으면 Google의 파비콘 서비스에서 링크 도메인의 아이콘을 가져옵니다.
+대표 항목의 섹션 제목은 기본적으로 `Featured`이며, `yeobaek.featured_title`에서 `대표 글과 프로젝트` 등으로 바꿀 수 있습니다. 종류 라벨 없이 제목과 설명을 표시하고, 외부 링크에는 도메인명과 ↗, 내부 글에는 →를 표시합니다.
+
+글의 front matter에 `image`가 있으면 홈의 최신 글과 Posts 목록에 썸네일이 표시됩니다. 대표 글은 연결된 글의 이미지를 사용합니다. 외부 링크는 `image`에 직접 고른 대표 이미지를 지정할 수 있고, 기존 `thumbnail` 설정으로 작은 아이콘을 지정하는 방식도 지원합니다. 이미지가 없으면 모든 목록에서 빈 이미지 칸 없이 텍스트만 표시하며, 파비콘을 자동으로 가져오거나 대신 표시하지 않습니다.
+
+## 외부에 작성한 글
+
+Medium 등 외부에 작성한 글은 블로그 저장소의 `_data/external_posts.yml`에 등록합니다. 글 본문은 원래 사이트에서 읽으며, 테마는 제목과 설명을 목록에 표시합니다.
+
+```yaml
+- title: Medium에 작성한 글 제목
+  description: 글을 한 줄로 소개합니다.
+  url: https://medium.com/@username/article
+  date: "2026-01-02T09:00:00+09:00"
+  source: Medium
+  categories: [Development]
+  tags: [Jekyll, Writing]
+  image: /assets/images/medium-cover.jpg # 선택 사항, 외부 이미지 URL도 가능
+```
+
+`title`, `url`, `date`는 필수입니다. `date`는 이 파일에 등록한 날짜가 아니라 **글의 원래 발행일**이며, 시간대가 포함된 ISO 8601 형식을 권장합니다. `categories`와 `tags`는 배열로 작성합니다. `source`를 생략하면 링크의 도메인명을 표시합니다. 외부 사이트에서 날짜나 이미지를 자동으로 수집하지는 않습니다.
+
+Posts와 홈의 최근 글은 로컬 글과 외부 글을 발행일 기준 최신순으로 합쳐 표시합니다. 같은 URL은 한 번만 표시하며, 로컬 글과 겹치면 로컬 글을 사용합니다. `_data/featured.yml`은 홈의 고정 항목과 순서만 관리하며, Posts의 정렬에는 영향을 주지 않습니다. 외부 글을 홈에 고정하려면 제목과 설명을 다시 입력할 필요 없이 다음처럼 연결할 수 있습니다.
+
+```yaml
+- type: link
+  url: https://medium.com/@username/article
+```
+
+이 경우 `external_posts.yml`의 제목·설명·이미지를 재사용합니다. `featured.yml`에서 직접 지정한 값이 있으면 그 값을 우선합니다. 프로젝트나 다른 외부 링크는 기존처럼 `featured.yml`에만 등록해도 되며, Posts에는 추가되지 않습니다.
 
 ## 포함된 기능과 스타일
 
-- **Posts 검색:** 제목, 설명, 카테고리, 태그를 브라우저에서 검색합니다. 별도 검색 서비스는 필요하지 않습니다.
-- **글 목차:** 글의 H2·H3 제목으로 생성합니다.
+- **Posts 검색:** 로컬·외부 글의 제목, 전체 설명, 카테고리, 태그, 출처를 검색하고 카테고리로 필터링합니다. 여러 검색어는 모두 일치하는 글을 찾습니다. 검색어와 주제는 URL의 `q`, `category`에 유지되어 새로고침하거나 주소를 공유해도 복원됩니다. 결과 수, 검색 결과 없음 안내와 필터 초기화를 제공합니다. 별도 검색 서비스는 필요하지 않습니다.
+- **글 목차:** 글의 H2·H3 제목으로 생성하고 현재 읽는 항목을 강조합니다. 모바일에서는 글 제목과 메타 정보 아래에 접이식 목차로 표시합니다. 목차가 없는 글은 한 열로 표시합니다.
+- **관련 글:** 본문 하단에 카테고리·태그가 겹치는 글을 최대 3개 표시합니다. 공통 주제가 많은 글을 우선하고 같은 점수에서는 최신 글을 우선합니다. 외부 글도 포함하며, 관련 글이 없어도 전체 목록 링크를 제공합니다.
 - **코드와 다이어그램:** 코드 글꼴은 D2Coding, 코드 색상은 Dracula Classic을 사용합니다. Mermaid는 테마에 포함된 파일을 불러옵니다.
 - **SEO:** `jekyll-seo-tag`와 `jekyll-sitemap`을 블로그에 설치하면 메타데이터와 사이트맵을 생성합니다. 실제 색인 여부는 검색 엔진의 판단에 따릅니다.
 

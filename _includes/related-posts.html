@@ -1,0 +1,38 @@
+{% include post-collection.html %}
+{% assign page_categories = page.categories | default: empty_posts %}
+{% assign page_tags = page.tags | default: empty_posts %}
+{% assign page_topics = page_categories | concat: page_tags | uniq %}
+{% capture related_order_keys %}
+  {%- for post_key in post_order -%}
+    {%- assign related_index = post_key | split: ':' | last | plus: 0 -%}
+    {%- assign candidate = all_posts[related_index] -%}
+    {%- unless candidate.url == page.url -%}
+      {%- assign candidate_categories = candidate.categories | default: empty_posts -%}
+      {%- assign candidate_tags = candidate.tags | default: empty_posts -%}
+      {%- assign candidate_topics = candidate_categories | concat: candidate_tags | uniq -%}
+      {%- assign related_score = 0 -%}
+      {%- for topic in candidate_topics -%}
+        {%- if page_topics contains topic -%}
+          {%- assign related_score = related_score | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if related_score > 0 -%}
+        {{- related_score | prepend: '000000' | slice: -6, 6 -}}:{{- post_key -}},
+      {%- endif -%}
+    {%- endunless -%}
+  {%- endfor -%}
+{% endcapture %}
+{% assign related_order = related_order_keys | split: ',' | sort | reverse %}
+<footer class="article-next">
+  {% if related_order.size > 0 %}
+  <section class="related-posts" aria-labelledby="related-title">
+    <h2 id="related-title">Related posts</h2>
+    {% for related_key in related_order limit:3 %}
+    {% assign related_index = related_key | split: ':' | last | plus: 0 %}
+    {% assign related_post = all_posts[related_index] %}
+    {% include post-list-item.html post=related_post heading='h3' description_length=110 %}
+    {% endfor %}
+  </section>
+  {% endif %}
+  <a class="back-link" href="{{ '/posts/' | relative_url }}">← All posts</a>
+</footer>

@@ -1,6 +1,7 @@
 ---
 layout: default
 ---
+{% include post-collection.html %}
 <section class="home-intro">
   <h1>{{ site.yeobaek.intro_title | default: site.title }}</h1>
   {% if site.yeobaek.intro %}<p>{{ site.yeobaek.intro }}</p>{% endif %}
@@ -9,25 +10,30 @@ layout: default
 
 {% if site.data.featured and site.data.featured.size > 0 %}
 <section class="home-section" aria-labelledby="selected-title">
-  <h2 id="selected-title">Selected</h2>
+  <h2 id="selected-title">{{ site.yeobaek.featured_title | default: 'Featured' | escape }}</h2>
   <div class="selected-list">
     {% for item in site.data.featured %}
     {% assign selected_post = site.posts | where: 'url', item.url | first %}
+    {% unless selected_post %}{% assign selected_post = external_posts | where: 'url', item.url | first %}{% endunless %}
+    {% assign selected_title = item.title | default: selected_post.title %}
+    {% assign selected_description = item.description | default: selected_post.description %}
     {% assign selected_image = item.image | default: selected_post.image %}
-    {% assign selected_link_thumbnail = item.thumbnail %}
-    {% if item.type == 'link' and selected_image == nil and selected_link_thumbnail == nil and item.url contains '://' %}
+    {% assign selected_thumbnail = selected_image | default: item.thumbnail %}
+    {% assign link_domain = nil %}
+    {% if item.type == 'link' and item.url contains '://' %}
       {% assign link_parts = item.url | split: '/' %}
-      {% assign link_domain = link_parts[2] %}
-      {% assign selected_link_thumbnail = 'https://www.google.com/s2/favicons?domain_url=https://' | append: link_domain | append: '&sz=64' %}
+      {% assign link_domain = link_parts[2] | split: '?' | first | split: '#' | first | remove_first: 'www.' %}
     {% endif %}
-    {% assign selected_thumbnail = selected_image | default: selected_link_thumbnail %}
     <article class="selected-row">
-      <span class="row-kind">{% if item.type == 'link' %}Link{% else %}Post{% endif %}</span>
       <a class="selected-main{% if selected_thumbnail %} has-thumbnail{% endif %}" href="{% if item.type == 'link' %}{{ item.url | escape }}{% else %}{{ item.url | relative_url | escape }}{% endif %}"{% if item.type == 'link' %} target="_blank" rel="noopener noreferrer"{% endif %}>
-        {% if selected_image %}{% include thumbnail.html image=selected_image %}{% else %}{% include thumbnail.html image=selected_link_thumbnail mode='favicon' %}{% endif %}
-        <div class="selected-copy"><h3>{{ item.title | escape }}</h3>{% if item.description %}<p>{{ item.description | escape }}</p>{% endif %}</div>
+        {% if selected_image %}{% include thumbnail.html image=selected_image %}{% else %}{% include thumbnail.html image=item.thumbnail mode='favicon' %}{% endif %}
+        <div class="selected-copy">
+          <h3>{{ selected_title | escape }}</h3>
+          {% if selected_description %}<p>{{ selected_description | escape }}</p>{% endif %}
+          {% if link_domain %}<span class="selected-source">{{ link_domain | escape }}</span>{% endif %}
+        </div>
+        <span class="row-arrow" aria-hidden="true">{% if item.type == 'link' %}↗{% else %}→{% endif %}</span>
       </a>
-      <span class="row-arrow" aria-hidden="true">↗</span>
     </article>
     {% endfor %}
   </div>
@@ -37,8 +43,11 @@ layout: default
 <section class="home-section" aria-labelledby="recent-title">
   <div class="section-heading"><h2 id="recent-title">Recent posts</h2><a href="{{ '/posts/' | relative_url }}">View all →</a></div>
   <div class="post-list">
-    {% for post in site.posts limit:3 %}
+    {% for post_key in post_order limit:3 %}
+    {% assign post_index = post_key | split: ':' | last | plus: 0 %}
+    {% assign post = all_posts[post_index] %}
     {% include post-list-item.html post=post heading='h3' description_length=110 %}
     {% endfor %}
+    {% if post_order.size == 0 %}<p class="posts-empty">No posts yet.</p>{% endif %}
   </div>
 </section>

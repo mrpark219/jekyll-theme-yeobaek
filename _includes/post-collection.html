@@ -1,0 +1,21 @@
+{% comment %}Share a date-sorted index without comparing YAML strings to Jekyll dates. Local posts win when URLs are duplicated.{% endcomment %}
+{% assign empty_posts = '' | split: '|' %}
+{% assign external_posts = site.data.external_posts | default: empty_posts %}
+{% assign all_posts = site.posts | concat: external_posts %}
+{% assign seen_post_urls = '' | split: '|' %}
+{% assign all_post_categories = '' | split: '|' %}
+{% capture post_order_keys %}
+  {%- for entry in all_posts -%}
+    {%- if entry.date and entry.title and entry.url -%}
+      {%- unless seen_post_urls contains entry.url -%}
+        {%- assign seen_post_urls = seen_post_urls | push: entry.url -%}
+        {%- if entry.categories -%}
+          {%- assign all_post_categories = all_post_categories | concat: entry.categories -%}
+        {%- endif -%}
+        {{- entry.date | date: '%s' | prepend: '00000000000000000000' | slice: -20, 20 -}}:{{- forloop.index0 -}},
+      {%- endunless -%}
+    {%- endif -%}
+  {%- endfor -%}
+{% endcapture %}
+{% assign post_order = post_order_keys | split: ',' | sort | reverse %}
+{% assign all_post_categories = all_post_categories | uniq | sort_natural %}

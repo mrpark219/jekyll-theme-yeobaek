@@ -1,16 +1,24 @@
 {% assign post_thumbnail = include.post.image.path | default: include.post.image.url | default: include.post.image %}
-{% assign thumbnail_mode = nil %}
-{% if post_thumbnail == nil and include.fallback_thumbnail %}
-  {% assign post_thumbnail = include.fallback_thumbnail %}
-  {% assign thumbnail_mode = 'favicon' %}
+{% assign post_is_external = false %}
+{% assign post_source = nil %}
+{% if include.post.url contains '://' %}
+  {% assign post_is_external = true %}
+  {% assign post_url_parts = include.post.url | split: '/' %}
+  {% assign post_source = include.post.source | default: post_url_parts[2] %}
 {% endif %}
-<article class="post-row"{% if include.searchable %} data-post-row{% endif %}>
-  <a class="post-row-main{% if post_thumbnail %} has-thumbnail{% endif %}" href="{{ include.post.url | relative_url | escape }}">
-    {% include thumbnail.html image=post_thumbnail mode=thumbnail_mode %}
+{% assign empty_topics = '' | split: '|' %}
+{% assign post_categories = include.post.categories | default: empty_topics %}
+{% assign post_tags = include.post.tags | default: empty_topics %}
+{% assign post_topics = post_categories | concat: post_tags | uniq %}
+{% capture post_search_text %}{{ include.post.title }} {{ include.post.description | default: include.post.excerpt | strip_html }} {{ post_topics | join: ' ' }} {{ post_source }}{% endcapture %}
+<article class="post-row"{% if include.searchable %} data-post-row data-search="{{ post_search_text | normalize_whitespace | escape }}" data-categories="{{ post_categories | jsonify | escape }}"{% endif %}>
+  <a class="post-row-main{% if post_thumbnail %} has-thumbnail{% endif %}" href="{% if post_is_external %}{{ include.post.url | escape }}{% else %}{{ include.post.url | relative_url | escape }}{% endif %}"{% if post_is_external %} target="_blank" rel="noopener noreferrer"{% endif %}>
+    {% include thumbnail.html image=post_thumbnail %}
     <div class="post-row-copy">
-      {% if include.heading == 'h3' %}<h3>{{ include.post.title | escape }}</h3>{% else %}<h2>{{ include.post.title | escape }}</h2>{% endif %}
+      {% if include.heading == 'h3' %}<h3>{{ include.post.title | escape }}{% if post_is_external %} <span class="external-arrow" aria-hidden="true">↗</span>{% endif %}</h3>{% else %}<h2>{{ include.post.title | escape }}{% if post_is_external %} <span class="external-arrow" aria-hidden="true">↗</span>{% endif %}</h2>{% endif %}
       <p>{{ include.post.description | default: include.post.excerpt | strip_html | truncate: include.description_length | escape }}</p>
-      {% if include.show_tags %}<span class="post-tags">{{ include.post.categories | join: ' · ' }}{% for tag in include.post.tags %}{% unless include.post.categories contains tag %} · {{ tag }}{% endunless %}{% endfor %}</span>{% endif %}
+      {% if post_source %}<span class="post-source">{{ post_source | escape }}</span>{% endif %}
+      {% if include.show_tags and post_topics.size > 0 %}<span class="post-tags">{{ post_topics | join: ' · ' | escape }}</span>{% endif %}
     </div>
   </a>
   <time datetime="{{ include.post.date | date_to_xmlschema }}">{{ include.post.date | date: '%Y.%m.%d' }}</time>

@@ -1,0 +1,9 @@
+# Use the original publication date, not the date you added this entry.
+- title: A note published on Medium
+  description: An external article appears alongside posts written on this site.
+  url: https://medium.com/@example/a-sample-note
+  date: "2026-01-02T09:00:00+09:00"
+  source: Medium
+  categories: [Development]
+  tags: [Writing]
+  # image: /assets/images/medium-cover.jpg
