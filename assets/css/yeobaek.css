@@ -207,6 +207,9 @@ a:hover { text-decoration-thickness: 2px; }
 .resume-doc .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
 .resume-doc .fact-row { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 12px; font-size: 14px; }
 
+.site-update:not([hidden]) { position: fixed; right: 20px; bottom: 20px; z-index: 100; display: flex; align-items: center; gap: 14px; padding: 12px 16px; border: 1px solid var(--yb-line); border-radius: var(--yb-radius); background: white; color: #222; box-shadow: 0 4px 20px #0002; }
+.site-update button { cursor: pointer; font: inherit; }
+
 @media (max-width: 720px) {
   .site-header { gap: 10px; flex-wrap: wrap; }
   .site-nav { gap: 20px; }

@@ -6,12 +6,21 @@
     {% seo %}
     <link rel="icon" type="image/svg+xml" href="{{ site.yeobaek.favicon | default: '/assets/favicon.svg' | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/yeobaek.css' | relative_url }}?v={{ site.time | date: '%s' }}">
-    {% if site.yeobaek.custom_css %}<link rel="stylesheet" href="{{ site.yeobaek.custom_css | relative_url }}">{% endif %}
+    {% if site.yeobaek.custom_css %}
+      {% assign custom_css_parts = site.yeobaek.custom_css | split: '#' %}
+      {% assign custom_css_url = custom_css_parts[0] | relative_url %}
+      <link rel="stylesheet" href="{{ custom_css_url | escape }}{% if custom_css_url contains '?' %}&amp;{% else %}?{% endif %}v={{ site.time | date: '%s' }}{% if custom_css_parts[1] %}#{{ custom_css_parts[1] | escape }}{% endif %}">
+    {% endif %}
   </head>
   <body>
     {% include header.html %}
     <main id="main-content" class="site-container">{{ content }}</main>
     {% include footer.html %}
+    <div class="site-update" id="site-update" role="status" hidden>
+      <span>새로운 내용이 있습니다.</span>
+      <button type="button" id="site-update-reload">새로고침</button>
+    </div>
+    <script>window.yeobaekUpdate = { version: {{ site.time | date: '%s' | jsonify }}, url: {{ '/assets/yeobaek-version.json' | relative_url | jsonify }} };</script>
     <script defer src="{{ '/assets/js/yeobaek.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
   </body>
 </html>

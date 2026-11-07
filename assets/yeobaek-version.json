@@ -1,0 +1,4 @@
+---
+layout: null
+---
+{"version": {{ site.time | date: '%s' | jsonify }}}

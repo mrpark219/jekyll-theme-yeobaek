@@ -1,4 +1,31 @@
 (() => {
+  const updateConfig = window.yeobaekUpdate;
+  const updateNotice = document.getElementById('site-update');
+  if (updateConfig && updateNotice && /^https?:$/.test(window.location.protocol)) {
+    let checking = false;
+    const checkForUpdate = async () => {
+      if (checking || !updateNotice.hidden || document.hidden) return;
+      checking = true;
+      try {
+        const response = await fetch(updateConfig.url, { cache: 'no-store' });
+        if (!response.ok) return;
+        const data = await response.json();
+        if (typeof data.version === 'string' && data.version !== updateConfig.version) {
+          updateNotice.hidden = false;
+        }
+      } catch (_) {
+        // A temporary network failure should not affect the page.
+      } finally {
+        checking = false;
+      }
+    };
+    document.getElementById('site-update-reload').addEventListener('click', () => window.location.reload());
+    document.addEventListener('visibilitychange', checkForUpdate);
+    window.addEventListener('pageshow', checkForUpdate);
+    window.setInterval(checkForUpdate, 60000);
+    checkForUpdate();
+  }
+
   const search = document.getElementById('post-search');
   if (search) {
     const form = document.getElementById('post-filters');
